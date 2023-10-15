@@ -37,8 +37,8 @@ void Mirror();
 
 void Shuffle();
 
-//void Blur();
-//
+void Blur();
+
 //void Crop();
 //
 //void Skew();
@@ -69,19 +69,18 @@ int main() {
     } else if (c == '7') {
         DetectEdges();
 
-    } else if (c == '8') {
+   } else if (c == '8') {
         Enlarge();
 
     } else if (c == '9') {
         Shrink();
     } else if (c == 'a') {
-     Mirror();
-    }
-    else if (c == 'b') {
+        Mirror();
+    } else if (c == 'b') {
         Shuffle();
+    } else if (c == 'c') {
+        Blur();
     }
-//    else if (c == 'c') {
-//        Blur();
 //    } else if (c == 'd') {
 //        Crop();
 //    } else if (c == 'e') {
@@ -322,7 +321,7 @@ void Rotate() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
-                imageRGB[i][j][k] = image2RGB[i][j][k];
+                imageRGB[i][j][k]= image2RGB[i][j][k];
             }
         }
     }
@@ -399,8 +398,7 @@ void DetectEdges() {
 }
 
 void Enlarge() {
-    cout
-            << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
+    cout << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
     cin >> n;
     // Handling the error in case n isn't from the proposed options
     while (n <= 0 || n >= 5) {
@@ -808,3 +806,25 @@ void Shuffle() {
     }
 }
 
+void Blur() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < 3; ++k) {
+
+                // Each bitmap equals the average of itself plus the neighboring bits (every time you increase the number of neighboring bits, the image gets more blurry)
+                imageRGB[i][j][k] = (imageRGB[i - 1][j - 1][k] + imageRGB[i - 1][j][k] + imageRGB[i][j - 1][k]
+                                     + imageRGB[i + 1][j - 1][k] + imageRGB[i + 1][j][k] + imageRGB[i - 1][j + 1][k]
+                                     + imageRGB[i][j + 1][k] + imageRGB[i + 1][j + 1][k] + imageRGB[i][j][k]
+                                     + imageRGB[i - 1][j - 2][k] + imageRGB[i][j - 2][k] + imageRGB[i + 1][j - 2][k]
+                                     + imageRGB[i + 2][j - 2][k] + imageRGB[i + 2][j - 1][k] + imageRGB[i + 2][j][k]
+                                     + imageRGB[i + 2][j + 1][k] + imageRGB[i - 1][j + 2][k] + imageRGB[i][j + 2][k]
+                                     + imageRGB[i + 1][j + 2][k] + imageRGB[i + 2][j + 2][k] + imageRGB[i - 2][j - 2][k]
+                                     + imageRGB[i - 2][j - 1][k] + imageRGB[i - 2][j][k] + imageRGB[i - 2][j + 1][k]
+                                     + imageRGB[i - 2][j + 2][k] + imageRGB[i - 2][j + 3][k] + imageRGB[i - 1][j + 3][k]
+                                     + imageRGB[i][j + 3][k] + imageRGB[i + 1][j + 3][k] + imageRGB[i + 2][j + 3][k]
+                                     + imageRGB[i + 3][j - 2][k] + imageRGB[i + 3][j - 1][k] + imageRGB[i + 3][j][k]
+                                     + imageRGB[i + 3][j + 1][k] + imageRGB[i + 3][j + 2][k] + imageRGB[i + 3][j + 3][k]) / 36;
+            }
+        }
+    }
+}
