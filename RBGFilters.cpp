@@ -31,8 +31,8 @@ void DetectEdges();
 
 void Enlarge();
 
-//void Shrink();
-//
+void Shrink();
+
 //void Mirror();
 //
 //void Shuffle();
@@ -71,9 +71,10 @@ int main() {
 
    } else if (c == '8') {
         Enlarge();
+
+    } else if (c == '9') {
+        Shrink();
     }
-//    } else if (c == '9') {
-//        Shrink();
 //    } else if (c == 'a') {
 //        Mirror();
 //    } else if (c == 'b') {
@@ -466,6 +467,58 @@ void Enlarge() {
     // Storing image2 in image
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < 3; ++k) {
+                imageRGB[i][j][k] = image2RGB[i][j][k];
+            }
+        }
+    }
+}
+
+void Shrink() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image2RGB[i][j][k] = 255;
+            }
+        }
+    }
+    cout << "Do you want to shrink the image dimensions to (1) 1/2, (2) 1/3 or (3) 1/4 the original dimensions? ";
+    cin >> n;
+    while (n <= 0 || n >= 4) {
+        cout << "Please enter a valid number\n";
+        cout << "Do you want to shrink the image dimensions to (1) 1/2, (2) 1/3 or (3) 1/4 the original dimensions? ";
+        cin >> n;
+    }
+    if (n == 1) {
+        // Storing half of the bits for each bitmap
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i * 2][j * 2][k];
+                }
+            }
+        }
+    } else if (n == 2) {
+        // Storing third of the bits for each bitmap
+        for (int i = 0; i < SIZE / 3; ++i) {
+            for (int j = 0; j < SIZE / 3; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i * 3][j * 3][k];
+                }
+            }
+        }
+    } else {
+        // Storing quarter of the bits for each bitmap
+        for (int i = 0; i < SIZE / 4; ++i) {
+            for (int j = 0; j < SIZE / 4; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i * 4][j * 4][k];
+                }
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < 3; ++k) {
                 imageRGB[i][j][k] = image2RGB[i][j][k];
             }
