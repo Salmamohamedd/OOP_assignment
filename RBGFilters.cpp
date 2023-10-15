@@ -33,8 +33,8 @@ void Enlarge();
 
 void Shrink();
 
-//void Mirror();
-//
+void Mirror();
+
 //void Shuffle();
 //
 //void Blur();
@@ -74,9 +74,9 @@ int main() {
 
     } else if (c == '9') {
         Shrink();
+    } else if (c == 'a') {
+        Mirror();
     }
-//    } else if (c == 'a') {
-//        Mirror();
 //    } else if (c == 'b') {
 //        Shuffle();
 //    } else if (c == 'c') {
@@ -526,3 +526,50 @@ void Shrink() {
     }
 }
 
+void Mirror() {
+    cout << "Do you want to mirror the (1) Left 1/2 (2) Lower 1/2 (3) Upper 1/2 or (4) Right 1/2? ";
+    cin >> n;
+    while (n <= 0 || n >= 5) {
+        cout << "Please enter a valid number\n";
+        cout << "Do you want to mirror the (1) Left 1/2 (2) Lower 1/2 (3) Upper 1/2 or (4) Right 1/2? ";
+        cin >> n;
+    }
+    // Storing each bit in the opposite direction of it in image
+    if (n == 1) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i][j][k];
+                    imageRGB[i][SIZE - j - 1][k] = image2RGB[i][j][k];
+                    imageRGB[i][j][k] = imageRGB[i][SIZE - j - 1][k];
+                }
+            }
+        }
+    } else if (n == 2) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] = imageRGB[SIZE - 1 - i][j][k];
+                }
+            }
+        }
+    } else if (n == 3) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i][j][k];
+                    imageRGB[SIZE - 1 - i][j][k] = image2RGB[i][j][k];
+                    imageRGB[i][j][k] = imageRGB[SIZE - 1 - i][j][k];
+                }
+            }
+        }
+    } else if (n == 4) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] = imageRGB[i][SIZE - j - 1][k];
+                }
+            }
+        }
+    }
+}
