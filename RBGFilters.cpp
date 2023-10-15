@@ -29,8 +29,8 @@ void DarkenLighten();
 
 void DetectEdges();
 
-//void Enlarge();
-//
+void Enlarge();
+
 //void Shrink();
 //
 //void Mirror();
@@ -68,9 +68,10 @@ int main() {
         Rotate();
     } else if (c == '7') {
         DetectEdges();
+
+   } else if (c == '8') {
+        Enlarge();
     }
-//   } else if (c == '8') {
-//        Enlarge();
 //    } else if (c == '9') {
 //        Shrink();
 //    } else if (c == 'a') {
@@ -394,3 +395,81 @@ void DetectEdges() {
         }
     }
 }
+
+void Enlarge() {
+    cout << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
+    cin >> n;
+    // Handling the error in case n isn't from the proposed options
+    while (n <= 0 || n >= 5) {
+        cout << "Please enter a valid number\n";
+        cout
+                << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
+        cin >> n;
+    }
+    // Storing the wanted quarter in image2
+    if (n == 1) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i / 2][j / 2][k];
+                }
+            }
+        }
+    } else if (n == 2) {
+        int m = 0;
+        for (int i = 0; i < SIZE / 2; i++) {
+            int k = 0;
+            for (int j = SIZE / 2; j < SIZE; j++) {
+                for (int l = 0; l < 3; ++l) {
+                    image2RGB[m][k][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k][l] = imageRGB[i][j][l];
+                    image2RGB[m][k + 1][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k + 1][l] = imageRGB[i][j][l];
+
+                }
+                k += 2;
+            }
+            m += 2;
+        }
+    } else if (n == 3) {
+        int m = 0;
+        for (int i = SIZE / 2; i < SIZE; i++) {
+            int k = 0;
+            for (int j = 0; j < SIZE / 2; j++) {
+                for (int l = 0; l < 3; ++l) {
+                    image2RGB[m][k][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k][l] = imageRGB[i][j][l];
+                    image2RGB[m][k + 1][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k + 1][l] = imageRGB[i][j][l];
+
+                }
+                k += 2;
+            }
+            m += 2;
+        }
+    } else {
+        int m = 0;
+        for (int i = SIZE / 2; i < SIZE; i++) {
+            int k = 0;
+            for (int j = SIZE / 2; j < SIZE; j++) {
+                for (int l = 0; l < 3; ++l) {
+                    image2RGB[m][k][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k][l] = imageRGB[i][j][l];
+                    image2RGB[m][k + 1][l] = imageRGB[i][j][l];
+                    image2RGB[m + 1][k + 1][l] = imageRGB[i][j][l];
+                }
+                k += 2;
+            }
+            m += 2;
+        }
+    }
+    // Storing image2 in image
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < 3; ++k) {
+                imageRGB[i][j][k] = image2RGB[i][j][k];
+            }
+        }
+    }
+}
+
