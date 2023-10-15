@@ -355,3 +355,42 @@ void DarkenLighten() {
     }
 }
 
+void DetectEdges() {
+    unsigned char image2[SIZE][SIZE];
+    int sum = 0;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                sum += imageRGB[i][j][k];
+            }
+        }
+    }
+    // Getting the average bitmap color
+    int avg = sum / (256 * 256 * RGB);
+    avg = sum / (SIZE * SIZE * RGB);
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = 0.299 * imageRGB[i][j][0] + 0.587 * imageRGB[i][j][1] + 0.114 * imageRGB[i][j][2];
+        }
+    }
+    // Checking for edges in each bitmap with its neighbor and storing the result in image2
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if ((image[i][j] > avg && image[i][j + 1] <= avg) || (image[i][j] <= avg && image[i + 1][j] > avg)
+                || (image[i][j] <= avg && image[i][j + 1] > avg)
+                || (image[i][j] > avg && image[i + 1][j] <= avg) || (image[i][j] > avg && image[i + 1][j + 1] <= avg) ||
+                (image[i][j] <= avg && image[i + 1][j + 1] > avg)) {
+                image2[i][j] = 0;
+            } else {
+                image2[i][j] = 255;
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                imageRGB[i][j][k] = image2[i][j];
+            }
+        }
+    }
+}
