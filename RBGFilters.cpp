@@ -15,8 +15,8 @@ void Filters();
 
 void BlackWhite();
 
-//void Invert();
-//
+void Invert();
+
 //void Merge();
 //
 //void Flip();
@@ -54,10 +54,10 @@ int main() {
         return 0;
     } else if (c == '1') {
         BlackWhite();
+    } else if (c == '2') {
+        Invert();
     }
-//    else if (c == '2') {
-//        Invert();
-//    } else if (c == '3') {
+    //else if (c == '3') {
 //        Merge();
 //    } else if (c == '4') {
 //        Flip();
@@ -172,8 +172,6 @@ void Filters() {
 
 void BlackWhite() {
     int avg, sum = 0;
-    //if pixel color is closer to black (between 0 and 127), make it fully black.
-    //if pixel color is closer to white (between 127 and 255), make it fully white.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             for (int k = 0; k < RGB; k++) {
@@ -199,6 +197,16 @@ void BlackWhite() {
         for (int j = 0; j < SIZE; j++) {
             for (int k = 0; k < RGB; k++) {
                 imageRGB[i][j][k] = image[i][j];
+            }
+        }
+    }
+}
+
+void Invert() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = 255 - imageRGB[i][j][k];
             }
         }
     }
