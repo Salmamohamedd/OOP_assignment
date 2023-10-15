@@ -39,9 +39,11 @@ void Shuffle();
 
 void Blur();
 
-//void Crop();
-//
-//void Skew();
+void Crop();
+
+void SkewRight();
+
+void SkewUp();
 
 void SaveImage();
 
@@ -69,7 +71,7 @@ int main() {
     } else if (c == '7') {
         DetectEdges();
 
-   } else if (c == '8') {
+    } else if (c == '8') {
         Enlarge();
 
     } else if (c == '9') {
@@ -80,12 +82,13 @@ int main() {
         Shuffle();
     } else if (c == 'c') {
         Blur();
+    } else if (c == 'd') {
+        Crop();
+    } else if (c == 'e') {
+        SkewRight();
+    } else if (c == 'f') {
+        SkewUp();
     }
-//    } else if (c == 'd') {
-//        Crop();
-//    } else if (c == 'e') {
-//        Skew();
-//    }
 //    while (true) {
 //        //adding this loop allows you to edit more than one filter on the same picture
 //        Filters();
@@ -321,7 +324,7 @@ void Rotate() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
-                imageRGB[i][j][k]= image2RGB[i][j][k];
+                imageRGB[i][j][k] = image2RGB[i][j][k];
             }
         }
     }
@@ -398,7 +401,8 @@ void DetectEdges() {
 }
 
 void Enlarge() {
-    cout << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
+    cout
+            << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
     cin >> n;
     // Handling the error in case n isn't from the proposed options
     while (n <= 0 || n >= 5) {
@@ -580,7 +584,7 @@ void Shuffle() {
             quart4[SIZE / 2][SIZE / 2][RGB];
     for (int i = 0; i < SIZE / 2; ++i) {
         for (int j = 0; j < SIZE / 2; ++j) {
-            for (int k = 0; k < RGB ; ++k) {
+            for (int k = 0; k < RGB; ++k) {
                 quart1[i][j][k] = imageRGB[i][j][k];
             }
         }
@@ -823,7 +827,194 @@ void Blur() {
                                      + imageRGB[i - 2][j + 2][k] + imageRGB[i - 2][j + 3][k] + imageRGB[i - 1][j + 3][k]
                                      + imageRGB[i][j + 3][k] + imageRGB[i + 1][j + 3][k] + imageRGB[i + 2][j + 3][k]
                                      + imageRGB[i + 3][j - 2][k] + imageRGB[i + 3][j - 1][k] + imageRGB[i + 3][j][k]
-                                     + imageRGB[i + 3][j + 1][k] + imageRGB[i + 3][j + 2][k] + imageRGB[i + 3][j + 3][k]) / 36;
+                                     + imageRGB[i + 3][j + 1][k] + imageRGB[i + 3][j + 2][k] +
+                                     imageRGB[i + 3][j + 3][k]) / 36;
+            }
+        }
+    }
+}
+
+void Crop() {
+    cout
+            << "Enter the X and Y dimensions you would like to crop from and also the length & width of the cropped image\n";
+    // "Please note that X + Length must be a number smaller than or equal SIZE
+    // Y + Width must be a number smaller than or equal SIZE
+    int x, y, len, wid;
+    cout << "Enter X: ";
+    cin >> x;
+    while (x < 0 || x > 255) {
+        cout << "Please enter a valid number (between 0 and 255): \n";
+        cout << "Enter X: ";
+        cin >> x;
+    }
+    cout << "Enter Y: ";
+    cin >> y;
+    while (y < 0 || y > 255) {
+        cout << "Please enter a valid number (between 0 and 255): \n";
+        cout << "Enter Y: ";
+        cin >> y;
+    }
+    cout << "Enter Length: ";
+    cin >> len;
+    while (x + len > 255) {
+        cout << "Please enter a valid number (Length + X should be less than or equal to 255): \n";
+        cout << "Enter Length: ";
+        cin >> len;
+    }
+    cout << "Enter Width: ";
+    cin >> wid;
+    while (y + wid > 255) {
+        cout << "Please enter a valid number (Width + Y should be less than or equal to 255): \n";
+        cout << "Enter Width: ";
+        cin >> wid;
+    }
+    for (int i = 0; i < SIZE; ++i) {//x->i, y->j
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image2RGB[i][j][k] = 255;
+            }
+        }
+    }
+    // Store the cropped image in image2 after filling it with white color
+    for (int i = y; i < len + y; ++i) {
+        for (int j = x; j < wid + x; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image2RGB[i][j][k] = imageRGB[i][j][k];
+            }
+        }
+    }
+    // store image2 in image
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = image2RGB[i][j][k];
+            }
+        }
+    }
+}
+
+void SkewRight() {
+    cout << "Enter the angle you want to skew upon: ";
+    double rad;
+    cin >> rad;
+    rad = 90 - rad;
+    rad = (rad * 22) / (180 * 7);
+    double s, step;
+    double x = (SIZE / (1 + (1 / tan(rad))));
+    s = SIZE - x;
+    step = s / SIZE;
+    unsigned char imgRGB[SIZE][SIZE + int(s)][RGB];
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[i][j][k] = 255;
+            }
+        }
+    }
+
+    double shrink = SIZE / x;
+    shrink = ceil(shrink);
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE / shrink; ++j) {
+            for (int k = 0; k < RGB; ++k)
+                imgRGB[i][j][k] = imageRGB[i][j * int(shrink)][k];
+        }
+    }
+
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = imgRGB[i][j][k];
+            }
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[i][j][k] = 255;
+            }
+        }
+    }
+
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = int(s); j < s + x; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[i][j][k] = imageRGB[i][int(j - s)][k];
+            }
+        }
+        s -= step;
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = imgRGB[i][j][k];
+            }
+        }
+    }
+}
+
+void SkewUp() {
+    cout << "Enter the angle you want to skew upon: ";
+    double rad;
+    cin >> rad;
+    rad = (rad * 22) / (180 * 7);
+    double s, step;
+    double x = (SIZE / (1 + (1 / tan(rad))));
+    s = SIZE - x;
+    step = s / SIZE;
+    unsigned char imgRGB[SIZE + int(s)][SIZE][RGB];
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[i][j][k] = 255;
+            }
+        }
+    }
+
+    double shrink = SIZE / x;
+    shrink = ceil(shrink);
+    for (int i = 0; i < SIZE / shrink; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k <RGB ; ++k) {
+                imgRGB[i][j][k] = imageRGB[i * int(shrink)][j][k];
+            }
+        }
+    }
+
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = imgRGB[i][j][k];
+            }
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[i][j][k] = 255;
+            }
+        }
+    }
+
+    double s2 = s;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imgRGB[int(i + s)][j][k] = imageRGB[i][j][k];
+            }
+            s -= step;
+        }
+        s = s2;
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = imgRGB[i][j][k];
             }
         }
     }
