@@ -6,7 +6,8 @@
 #include <cmath>
 
 using namespace std;
-unsigned char imageRGB[SIZE][SIZE][RGB]; //3D array for colored images
+unsigned char imageRGB[SIZE][SIZE][RGB];
+unsigned char image2RGB[SIZE][SIZE][RGB];//3D array for colored images
 unsigned char image[SIZE][SIZE];
 
 void LoadImage();
@@ -17,8 +18,8 @@ void BlackWhite();
 
 void Invert();
 
-//void Merge();
-//
+void Merge();
+
 //void Flip();
 //
 //void Rotate();
@@ -56,10 +57,10 @@ int main() {
         BlackWhite();
     } else if (c == '2') {
         Invert();
+    } else if (c == '3') {
+        Merge();
     }
-    //else if (c == '3') {
-//        Merge();
-//    } else if (c == '4') {
+    //else if (c == '4') {
 //        Flip();
 //    } else if (c == '5') {
 //        DarkenLighten();
@@ -211,3 +212,23 @@ void Invert() {
         }
     }
 }
+void Merge() {
+    //loading image function is added here to allow loading another image (array image2)
+    char image_name2[100];
+    cout << "Enter the source image file name of the image you want to be merged with: ";
+    cin >> image_name2;
+
+    // add to it .bmp extension and load image
+    strcat(image_name2, ".bmp");
+    readRGBBMP(image_name2, image2RGB);
+
+    //this loop takes the average of pixels in same position from both photos to merge them together
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = (imageRGB[i][j][k] + image2RGB[i][j][k]) / 2;
+            }
+        }
+    }
+}
+
