@@ -35,8 +35,8 @@ void Shrink();
 
 void Mirror();
 
-//void Shuffle();
-//
+void Shuffle();
+
 //void Blur();
 //
 //void Crop();
@@ -69,17 +69,18 @@ int main() {
     } else if (c == '7') {
         DetectEdges();
 
-   } else if (c == '8') {
+    } else if (c == '8') {
         Enlarge();
 
     } else if (c == '9') {
         Shrink();
     } else if (c == 'a') {
-        Mirror();
+     Mirror();
     }
-//    } else if (c == 'b') {
-//        Shuffle();
-//    } else if (c == 'c') {
+    else if (c == 'b') {
+        Shuffle();
+    }
+//    else if (c == 'c') {
 //        Blur();
 //    } else if (c == 'd') {
 //        Crop();
@@ -321,7 +322,7 @@ void Rotate() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
-                imageRGB[i][j][k]= image2RGB[i][j][k];
+                imageRGB[i][j][k] = image2RGB[i][j][k];
             }
         }
     }
@@ -398,7 +399,8 @@ void DetectEdges() {
 }
 
 void Enlarge() {
-    cout << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
+    cout
+            << "Do you want to enlarge (1) top left quarter, (2) top right quarter, (3) bottom left quarter or (4) bottom right quarter? ";
     cin >> n;
     // Handling the error in case n isn't from the proposed options
     while (n <= 0 || n >= 5) {
@@ -573,3 +575,236 @@ void Mirror() {
         }
     }
 }
+
+void Shuffle() {
+    // Storing each quarter of the image in four 3D arrays
+    unsigned char quart1[SIZE / 2][SIZE / 2][RGB], quart2[SIZE / 2][SIZE / 2][RGB], quart3[SIZE / 2][SIZE / 2][RGB],
+            quart4[SIZE / 2][SIZE / 2][RGB];
+    for (int i = 0; i < SIZE / 2; ++i) {
+        for (int j = 0; j < SIZE / 2; ++j) {
+            for (int k = 0; k < RGB ; ++k) {
+                quart1[i][j][k] = imageRGB[i][j][k];
+            }
+        }
+    }
+    int m = 0, l;
+    for (int i = 0; i < SIZE / 2; ++i) {
+        l = 0;
+        for (int j = SIZE / 2; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                quart2[i][l][k] = imageRGB[i][j][k];
+            }
+            l++;
+        }
+    }
+    l = 0;
+    for (int i = SIZE / 2; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE / 2; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                quart3[m][j][k] = imageRGB[i][j][k];
+            }
+        }
+        m++;
+    }
+    m = 0;
+    for (int i = SIZE / 2; i < SIZE; ++i) {
+        l = 0;
+        for (int j = SIZE / 2; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                quart4[m][l][k] = imageRGB[i][j][k];
+            }
+            l++;
+        }
+        m++;
+    }
+    m = 0, l = 0;
+    int a, b, c, d;
+    cout
+            << "(1) Top Left , (2) Top right , (3) Bottom Left, (4) Bottom Right. Please enter the order you want the image shuffled in: ";
+    cin >> a >> b >> c >> d;
+    while (a <= 0 || a >= 5 || b <= 0 || b >= 5 || c <= 0 || c >= 5 || d <= 0 || d >= 5) {
+        cout << "Please enter valid numbers\n";
+        cout
+                << "(1) Top Left , (2) Top right , (3) Bottom Left, (4) Bottom Right. Please enter the order you want the image shuffled in: ";
+        cin >> n;
+    }
+    if (a == 1) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart1[i][j][k];
+                }
+            }
+        }
+    } else if (a == 2) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart2[i][j][k];
+                }
+            }
+        }
+    } else if (a == 3) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart3[i][j][k];
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart4[i][j][k];
+                }
+            }
+        }
+    }
+    if (b == 1) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            l = 0;
+            for (int j = SIZE; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart1[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+
+    } else if (b == 2) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart2[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else if (b == 3) {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart3[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart4[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    }
+    m = 0, l = 0;
+    if (c == 1) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart1[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else if (c == 2) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart2[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else if (c == 3) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart3[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = 0; j < SIZE / 2; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart4[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    }
+    m = 0, l = 0;
+    if (d == 1) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart1[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else if (d == 2) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart2[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else if (d == 3) {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart3[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    } else {
+        for (int i = SIZE / 2; i < SIZE; ++i) {
+            l = 0;
+            for (int j = SIZE / 2; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = quart4[m][l][k];
+                }
+                l++;
+            }
+            m++;
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k] = image2RGB[i][j][k];
+            }
+        }
+    }
+}
+
