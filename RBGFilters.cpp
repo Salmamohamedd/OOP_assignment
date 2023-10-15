@@ -9,6 +9,7 @@ using namespace std;
 unsigned char imageRGB[SIZE][SIZE][RGB];
 unsigned char image2RGB[SIZE][SIZE][RGB];//3D array for colored images
 unsigned char image[SIZE][SIZE];
+int n;
 
 void LoadImage();
 
@@ -22,8 +23,8 @@ void Merge();
 
 //void Flip();
 //
-//void Rotate();
-//
+void Rotate();
+
 //void DarkenLighten();
 //
 //void DetectEdges();
@@ -60,13 +61,15 @@ int main() {
     } else if (c == '3') {
         Merge();
     }
-    //else if (c == '4') {
-//        Flip();
-//    } else if (c == '5') {
+//else if (c == '4') {
+//  Flip();
+//   } else if (c == '5') {
 //        DarkenLighten();
-//    } else if (c == '6') {
-//        Rotate();
-//    } else if (c == '7') {
+//   }
+    else if (c == '6') {
+        Rotate();
+    }
+    //else if (c == '7') {
 //        DetectEdges();
 //    } else if (c == '8') {
 //        Enlarge();
@@ -212,6 +215,7 @@ void Invert() {
         }
     }
 }
+
 void Merge() {
     //loading image function is added here to allow loading another image (array image2)
     char image_name2[100];
@@ -232,3 +236,47 @@ void Merge() {
     }
 }
 
+void Rotate() {
+    // Asking the user for the degree he wants the image rotated by
+    cout << "Do you want to rotate by (1) 90 degrees, (2) 180 degrees, (3) 270 degrees? ";
+    cin >> n;
+    // Handling the error in case n isn't from the proposed options
+    while (n <= 0 || n >= 4) {
+        cout << "Please enter a valid number\n";
+        cout << "Do you want to rotate by (1) 90 degrees, (2) 180 degrees, (3) 270 degrees? ";
+        cin >> n;
+    }
+    // Storing the rotated image in image2 then storing image2 in image
+    if (n == 1) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = imageRGB[SIZE - 1 - j][i][k];
+                }
+            }
+        }
+    } else if (n == 2) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = imageRGB[SIZE - 1 - i][SIZE - 1 - j][k];
+                }
+            }
+        }
+    } else if (n == 3) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < RGB; ++k) {
+                    image2RGB[i][j][k] = imageRGB[j][SIZE - 1 - i][k];
+                }
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageRGB[i][j][k]= image2RGB[i][j][k];
+            }
+        }
+    }
+}
