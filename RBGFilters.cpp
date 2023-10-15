@@ -48,7 +48,6 @@ void SkewUp();
 void SaveImage();
 
 int main() {
-
     LoadImage();
     Filters();
     cout << "Input number of the filter you want to use: ";
@@ -70,10 +69,8 @@ int main() {
         Rotate();
     } else if (c == '7') {
         DetectEdges();
-
     } else if (c == '8') {
         Enlarge();
-
     } else if (c == '9') {
         Shrink();
     } else if (c == 'a') {
@@ -88,49 +85,51 @@ int main() {
         SkewRight();
     } else if (c == 'f') {
         SkewUp();
+    } else if (c == 's') {
+        SaveImage();
     }
-//    while (true) {
-//        //adding this loop allows you to edit more than one filter on the same picture
-//        Filters();
-//        cout << "Input number of the filter you want to use: ";
-//        cin >> c;
-//        //program stops when you enter 0, you can save image and still make more edits on the same pic till you exit.
-//        if (c == '0') {
-//            return 0;
-//        } else if (c == '1') {
-//            BlackWhite();
-//        } else if (c == '2') {
-//            Invert();
-//        } else if (c == '3') {
-//            Merge();
-//        } else if (c == '4') {
-//            Flip();
-//        } else if (c == '5') {
-//            DarkenLighten();
-//        } else if (c == '6') {
-//            Rotate();
-//        } else if (c == '7') {
-//            DetectEdges();
-//        } else if (c == '8') {
-//            Enlarge();
-//        } else if (c == '9') {
-//            Shrink();
-//        } else if (c == 'a') {
-//            Mirror();
-//        } else if (c == 'b') {
-//            Shuffle();
-//        } else if (c == 'c') {
-//            Blur();
-//        } else if (c == 'd') {
-//            Crop();
-//        } else if (c == 'e') {
-//            Skew();
-//        } else if (c == 's') {
-//            SaveImage();
-//        }
-//    }
-    SaveImage();
-    return 0;
+    while (true) {
+        //adding this loop allows you to edit more than one filter on the same picture
+        Filters();
+        cout << "Input number of the filter you want to use: ";
+        cin >> c;
+        //program stops when you enter 0, you can save image and still make more edits on the same pic till you exit.
+        if (c == '0') {
+            return 0;
+        } else if (c == '1') {
+            BlackWhite();
+        } else if (c == '2') {
+            Invert();
+        } else if (c == '3') {
+            Merge();
+        } else if (c == '4') {
+            Flip();
+        } else if (c == '5') {
+            DarkenLighten();
+        } else if (c == '6') {
+            Rotate();
+        } else if (c == '7') {
+            DetectEdges();
+        } else if (c == '8') {
+            Enlarge();
+        } else if (c == '9') {
+            Shrink();
+        } else if (c == 'a') {
+            Mirror();
+        } else if (c == 'b') {
+            Shuffle();
+        } else if (c == 'c') {
+            Blur();
+        } else if (c == 'd') {
+            Crop();
+        } else if (c == 'e') {
+            SkewRight();
+        } else if (c == 'f') {
+            SkewUp();
+        } else if (c == 's') {
+            SaveImage();
+        }
+    }
 }
 
 void LoadImage() {
