@@ -21,14 +21,14 @@ void Invert();
 
 void Merge();
 
-//void Flip();
-//
+void Flip();
+
 void Rotate();
 
-//void DarkenLighten();
-//
-//void DetectEdges();
-//
+void DarkenLighten();
+
+void DetectEdges();
+
 //void Enlarge();
 //
 //void Shrink();
@@ -60,18 +60,16 @@ int main() {
         Invert();
     } else if (c == '3') {
         Merge();
-    }
-//else if (c == '4') {
-//  Flip();
-//   } else if (c == '5') {
-//        DarkenLighten();
-//   }
-    else if (c == '6') {
+    } else if (c == '4') {
+        Flip();
+    } else if (c == '5') {
+        DarkenLighten();
+    } else if (c == '6') {
         Rotate();
+    } else if (c == '7') {
+        DetectEdges();
     }
-    //else if (c == '7') {
-//        DetectEdges();
-//    } else if (c == '8') {
+//   } else if (c == '8') {
 //        Enlarge();
 //    } else if (c == '9') {
 //        Shrink();
@@ -236,6 +234,52 @@ void Merge() {
     }
 }
 
+void Flip() {
+    // Ask user which way he wants to flip the image
+    cout << "Do you want to flip it (1) horizontally or (2) vertically? ";
+    cin >> n;
+    // Handling the error in case n isn't from the proposed options
+    while (n <= 0 || n >= 3) {
+        cout << "Please enter a valid number\n";
+        cout << "Do you want to flip it (1) horizontally or (2) vertically? ";
+        cin >> n;
+    }
+    // Flipping the image horizontally
+    if (n == 1) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[i][SIZE - 1 - j][k];
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] = image2RGB[i][j][k];
+                }
+            }
+        }
+    }
+        // Flipping the image vertically
+    else if (n == 2) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image2RGB[i][j][k] = imageRGB[SIZE - 1 - i][j][k];
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] = image2RGB[i][j][k];
+                }
+            }
+        }
+    }
+}
+
 void Rotate() {
     // Asking the user for the degree he wants the image rotated by
     cout << "Do you want to rotate by (1) 90 degrees, (2) 180 degrees, (3) 270 degrees? ";
@@ -280,3 +324,34 @@ void Rotate() {
         }
     }
 }
+
+void DarkenLighten() {
+    cout << "Do you want to (1) Darken the image or (2) Lighten it? ";
+    cin >> n;
+    // Handling the error in case n isn't from the proposed options
+    while (n <= 0 || n >= 3) {
+        cout << "Please enter a valid number\n";
+        cout << "Do you want to (1) Darken the image or (2) Lighten it? ";
+        cin >> n;
+    }
+    if (n == 1) {
+        // Dividing each bitmap by two so it approaches zero and gets more darkened
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] /= 2;
+                }
+            }
+        }
+    } else {
+        // Adding each bitmap by 50% (while making sure it doesn't exceed 255) so that it approaches white and gets more lightened
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    imageRGB[i][j][k] += (255 - imageRGB[i][j][k]) / 2;
+                }
+            }
+        }
+    }
+}
+
